@@ -1,0 +1,23 @@
+# Backend
+backend/.venv/
+backend/.env
+backend/chroma_db/
+backend/uploads/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/**/*.pyc
+backend/*.egg-info/
+
+# Frontend
+frontend/node_modules/
+frontend/.next/
+frontend/.env.local
+frontend/out/
+frontend/build/
+
+# General
+.DS_Store
+*.log
+*.tmp
+.idea/
+.vscode/
