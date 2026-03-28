@@ -1,4 +1,4 @@
-import type { DocumentRecord, IngestionResult, SSEEvent, SourceCitation } from "./types";
+import type { DocumentRecord, IngestionResult, SSEEvent } from "./types";
 
 const API_BASE = "/api";
 
@@ -79,7 +79,7 @@ export async function* streamChat(
         const event = JSON.parse(trimmed.slice(6)) as SSEEvent;
         yield event;
         if (event.type === "done" || event.type === "error") return;
-      } catch {
+      } catch (_e) {
         // malformed SSE line — skip
       }
     }

@@ -13,7 +13,7 @@ export default function DocumentsPage() {
       <section>
         <h1 className="text-xl font-bold text-gray-900 mb-1">Upload Documents</h1>
         <p className="text-sm text-gray-500 mb-4">
-          Supported formats: PDF, DOCX, TXT, MD · Files are indexed locally — nothing leaves your machine.
+          Supported formats: PDF, DOCX, DOC, XLSX, XLS, TXT, MD, PNG, JPG, GIF, BMP, TIFF, WEBP · Files are indexed locally — nothing leaves your machine.
         </p>
         <DocumentUploader />
       </section>

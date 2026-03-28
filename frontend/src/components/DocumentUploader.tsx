@@ -10,8 +10,17 @@ import type { IngestionResult } from "@/lib/types";
 const ACCEPTED_TYPES = {
   "application/pdf": [".pdf"],
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
+  "application/msword": [".doc"],
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"],
+  "application/vnd.ms-excel": [".xls"],
   "text/plain": [".txt"],
   "text/markdown": [".md"],
+  "image/png": [".png"],
+  "image/jpeg": [".jpg", ".jpeg"],
+  "image/gif": [".gif"],
+  "image/bmp": [".bmp"],
+  "image/tiff": [".tiff", ".tif"],
+  "image/webp": [".webp"],
 };
 
 interface UploadStatus {
@@ -93,7 +102,7 @@ export default function DocumentUploader() {
         <p className="text-sm font-medium text-gray-700">
           {isDragActive ? "Drop files here…" : "Drag & drop files, or click to browse"}
         </p>
-        <p className="text-xs text-gray-400 mt-1">PDF, DOCX, TXT, MD · Max 50 MB each</p>
+        <p className="text-xs text-gray-400 mt-1">PDF, DOCX, DOC, XLSX, XLS, TXT, MD, PNG, JPG, GIF, BMP, TIFF, WEBP · Max 50 MB each</p>
       </div>
 
       {/* Upload status list */}

@@ -5,7 +5,7 @@ from typing import List
 class Settings(BaseSettings):
     # Ollama (local LLM - free, no API key)
     ollama_base_url: str = "http://localhost:11434"
-    ollama_model: str = "llama3.2"
+    ollama_model: str = "llama3.2:1b"
 
     # SentenceTransformer embedding (local - free, no API key)
     embedding_model: str = "all-MiniLM-L6-v2"
@@ -16,14 +16,16 @@ class Settings(BaseSettings):
 
     # LLM generation
     llm_temperature: float = 0.1
-    llm_max_tokens: int = 2048
+    llm_max_tokens: int = 1024           # enough for detailed answers
+    llm_context_window: int = 4096       # system prompt + 6 chunks + question
+    llm_request_timeout: float = 120.0
 
-    # Chunking
-    chunk_size: int = 1000
-    chunk_overlap: int = 200
+    # Chunking — smaller chunks = more precise retrieval
+    chunk_size: int = 500
+    chunk_overlap: int = 100
 
-    # Retrieval
-    retrieval_k: int = 5
+    # Retrieval — MMR fetches fetch_k=k*4 candidates, returns k diverse ones
+    retrieval_k: int = 6
     retrieval_score_threshold: float = 0.3
 
     # Upload
@@ -31,7 +33,7 @@ class Settings(BaseSettings):
     max_file_size_mb: int = 50
 
     # CORS
-    allowed_origins: List[str] = ["http://localhost:3000"]
+    allowed_origins: List[str] = ["http://localhost:3001"]
 
     model_config = SettingsConfigDict(
         env_file=".env",

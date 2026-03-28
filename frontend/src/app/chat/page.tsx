@@ -3,6 +3,7 @@
 import { Trash2 } from "lucide-react";
 import ChatWindow from "@/components/ChatWindow";
 import ChatInput from "@/components/ChatInput";
+import SystemBanner from "@/components/SystemBanner";
 import { useChat } from "@/hooks/useChat";
 
 export default function ChatPage() {
@@ -31,6 +32,9 @@ export default function ChatPage() {
           )}
         </div>
       </div>
+
+      {/* System info banner (model + hardware + speed advice) */}
+      <SystemBanner />
 
       {/* Messages */}
       <ChatWindow messages={messages} />

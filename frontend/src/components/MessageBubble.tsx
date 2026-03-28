@@ -1,8 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { User, Bot, AlertCircle } from "lucide-react";
+import { User, Bot, AlertCircle, Clock } from "lucide-react";
 import SourceCitations from "./SourceCitations";
 import type { Message } from "@/lib/types";
 
@@ -12,6 +13,15 @@ interface Props {
 
 export default function MessageBubble({ message }: Props) {
   const isUser = message.role === "user";
+
+  // Elapsed-time counter — visible while the assistant is generating
+  const [elapsed, setElapsed] = useState(0);
+  useEffect(() => {
+    if (!message.isStreaming) { setElapsed(0); return; }
+    const start = Date.now();
+    const id = setInterval(() => setElapsed(Math.floor((Date.now() - start) / 1000)), 1000);
+    return () => clearInterval(id);
+  }, [message.isStreaming]);
 
   return (
     <div className={`flex gap-3 ${isUser ? "flex-row-reverse" : "flex-row"}`}>
@@ -48,6 +58,16 @@ export default function MessageBubble({ message }: Props) {
                 </ReactMarkdown>
                 {message.isStreaming && <span className="cursor-blink" />}
               </div>
+              {message.isStreaming && (
+                <div className="flex items-center gap-1 mt-2 text-xs text-gray-400">
+                  <Clock className="w-3 h-3" />
+                  <span>
+                    {message.content
+                      ? `Generating… ${elapsed}s`
+                      : `Thinking… ${elapsed}s (LLM on CPU — this can take 30–90s)`}
+                  </span>
+                </div>
+              )}
             </>
           )}
         </div>

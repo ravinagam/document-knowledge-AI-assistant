@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, KeyboardEvent } from "react";
+import { useState, useRef, useEffect, KeyboardEvent } from "react";
 import { Send, Square } from "lucide-react";
 
 interface Props {
@@ -11,6 +11,13 @@ interface Props {
 export default function ChatInput({ onSend, isLoading }: Props) {
   const [value, setValue] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Refocus textarea when response finishes streaming
+  useEffect(() => {
+    if (!isLoading) {
+      textareaRef.current?.focus();
+    }
+  }, [isLoading]);
 
   const handleSend = () => {
     const trimmed = value.trim();

@@ -1,8 +1,11 @@
+import logging
 import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
-from app.api.routes import documents, chat
+from app.api.routes import documents, chat, system
+
+logger = logging.getLogger(__name__)
 
 app = FastAPI(
     title="Document Knowledge Assistant API",
@@ -20,12 +23,20 @@ app.add_middleware(
 
 app.include_router(documents.router)
 app.include_router(chat.router)
+app.include_router(system.router)
 
 
 @app.on_event("startup")
 async def startup():
     os.makedirs(settings.upload_dir, exist_ok=True)
     os.makedirs(settings.chroma_persist_directory, exist_ok=True)
+    # Pre-warm the embedding model so the first upload doesn't trigger a cold-start timeout
+    try:
+        from app.core.embeddings import get_embedding_model
+        get_embedding_model()
+        logger.info("Embedding model loaded and ready.")
+    except Exception as e:
+        logger.warning("Embedding model pre-warm failed: %s", e)
 
 
 @app.get("/health")
